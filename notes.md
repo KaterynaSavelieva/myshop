@@ -38,5 +38,5 @@ _Tabellen anzeigen_
         
         sudo mariadb -u root myshopdb -e "SHOW TABLES;"
 
-
+Git pull
 
