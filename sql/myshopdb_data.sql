@@ -1,163 +1,137 @@
-USE myshopdb;
+-- Постачальники
+INSERT INTO lieferanten (lieferant_id, name, kontaktperson, telefon, email) VALUES
+(1,'FruchtHof GmbH','Peter Kern','0660-100100','frucht@hof.at'),
+(2,'DairyCo','Sabine Milch','0660-200200','office@dairyco.at'),
+(3,'Bäckerei Groß','Anna Brot','0660-300300','bestellung@baeckerei.at'),
+(4,'GetränkePartner','Roman Saft','0660-400400','sale@getraenkepartner.at'),
+(5,'Süßwaren Import','Marta Kakao','0660-500500','choco@suesswaren.at');
 
+--  Клієнти (20 шт)
+INSERT INTO kunden (kunden_id, vorname, nachname, email, telefon) VALUES
+(1,'Anna','Müller','anna1@example.com','0660111111'),
+(2,'Lukas','Schmidt','lukas@example.com','0660222222'),
+(3,'Mia','Lehner','mia@example.com','0660333333'),
+(4,'Felix','Bauer','felix@example.com','0660444444'),
+(5,'Lea','Hofer','lea@example.com','0660555555'),
+(6,'Paul','Wagner','paul@example.com','0660666666'),
+(7,'Sofia','Haas','sofia@example.com','0660777777'),
+(8,'Jonas','Fischer','jonas@example.com','0660888888'),
+(9,'Emilia','Moser','emilia@example.com','0660999999'),
+(10,'Max','Weber','max@example.com','0660123456'),
+(11,'Clara','Klein','clara@example.com','0660123457'),
+(12,'Tom','Winter','tom@example.com','0660123458'),
+(13,'Nina','Lang','nina@example.com','0660123459'),
+(14,'Ben','Kaiser','ben@example.com','0660123460'),
+(15,'Lena','Auer','lena@example.com','0660123461'),
+(16,'Erik','Gruber','erik@example.com','0660123462'),
+(17,'Sarah','Pichler','sarah@example.com','0660123463'),
+(18,'Jan','Huber','jan@example.com','0660123464'),
+(19,'Mara','Egger','mara@example.com','0660123465'),
+(20,'Leo','Wallner','leo@example.com','0660123466');
 
+-- Товари (роздрібна ціна «verkaufspreis» на сьогодні; 
+--   закупочні ціни будуть в einkauf_artikel.einkaufspreis)
+INSERT INTO artikel (artikel_id, name, preis, lagerbestand, lieferant_id) VALUES
+(1,'Apfel',0.99,0,1),
+(2,'Banane',1.10,0,1),
+(3,'Brot',2.50,0,3),
+(4,'Milch 1L',1.30,0,2),
+(5,'Käse 200g',3.90,0,2),
+(6,'Kaffee 500g',7.50,0,5),
+(7,'Tee 100g',3.20,0,5),
+(8,'Zucker 1kg',1.20,0,4),
+(9,'Mehl 1kg',1.00,0,3),
+(10,'Saft 1L',2.20,0,4),
+(11,'Schokolade 100g',2.80,0,5),
+(12,'Eier 10St',2.40,0,2);
 
-INSERT INTO lieferanten (name, kontaktperson, telefon, email) VALUES
-('Frucht GmbH 01','Max Apfel','0316-100001','kontakt01@frucht.at'),
-('Frucht GmbH 02','Mia Birne','0316-100002','kontakt02@frucht.at'),
-('Frucht GmbH 03','Paul Kirsche','0316-100003','kontakt03@frucht.at'),
-('Frucht GmbH 04','Lena Pfirsich','0316-100004','kontakt04@frucht.at'),
-('Frucht GmbH 05','Tom Traube','0316-100005','kontakt05@frucht.at'),
-('Backhaus KG 06','Ben Brotkorn','0316-100006','kontakt06@backhaus.at'),
-('Backhaus KG 07','Eva Semmel','0316-100007','kontakt07@backhaus.at'),
-('Backhaus KG 08','Jan Brezel','0316-100008','kontakt08@backhaus.at'),
-('Backhaus KG 09','Nina Bäcker','0316-100009','kontakt09@backhaus.at'),
-('Backhaus KG 10','Oli Kruste','0316-100010','kontakt10@backhaus.at'),
-('Milchhof AG 11','Anna Kuhn','0316-100011','kontakt11@milchhof.at'),
-('Milchhof AG 12','Felix Rahm','0316-100012','kontakt12@milchhof.at'),
-('Milchhof AG 13','Sara Butter','0316-100013','kontakt13@milchhof.at'),
-('Milchhof AG 14','Leon Käse','0316-100014','kontakt14@milchhof.at'),
-('Milchhof AG 15','Emma Joghurt','0316-100015','kontakt15@milchhof.at'),
-('Getränke GmbH 16','Lukas Cola','0316-100016','kontakt16@getraenke.at'),
-('Getränke GmbH 17','Mara Wasser','0316-100017','kontakt17@getraenke.at'),
-('Getränke GmbH 18','Tim Saft','0316-100018','kontakt18@getraenke.at'),
-('Getränke GmbH 19','Ida Limo','0316-100019','kontakt19@getraenke.at'),
-('Getränke GmbH 20','Eric Tee','0316-100020','kontakt20@getraenke.at'),
-('Hauswaren GmbH 21','Klara Topf','0316-100021','kontakt21@hauswaren.at'),
-('Hauswaren GmbH 22','Jonas Pfanne','0316-100022','kontakt22@hauswaren.at'),
-('Hauswaren GmbH 23','Mila Tasse','0316-100023','kontakt23@hauswaren.at'),
-('Hauswaren GmbH 24','Noah Messer','0316-100024','kontakt24@hauswaren.at'),
-('Hauswaren GmbH 25','Lia Gabel','0316-100025','kontakt25@hauswaren.at'),
-('Süßwaren KG 26','Pia Keks','0316-100026','kontakt26@suess.at'),
-('Süßwaren KG 27','Rico Schoko','0316-100027','kontakt27@suess.at'),
-('Süßwaren KG 28','Yara Bonbon','0316-100028','kontakt28@suess.at'),
-('Süßwaren KG 29','Uwe Waffel','0316-100029','kontakt29@suess.at'),
-('Süßwaren KG 30','Tina Praline','0316-100030','kontakt30@suess.at');
+-- Закупки (шапки) – старт 2025-09-01 і далі
+INSERT INTO einkauf (einkauf_id, lieferant_id, datum, rechnung_nr, bemerkung) VALUES
+(1,1,'2025-09-01 10:00:00','R-2025-001','Erstbelieferung Obst'),
+(2,2,'2025-09-10 09:30:00','R-2025-002','Milchprodukte'),
+(3,3,'2025-09-20 08:45:00','R-2025-003','Backwaren & Mehl'),
+(4,4,'2025-10-05 11:10:00','R-2025-004','Getränke & Zucker'),
+(5,5,'2025-10-12 13:20:00','R-2025-005','Kaffee/Tee/Schoko');
 
-INSERT INTO kunden (vorname, nachname, email, telefon) VALUES
-('Anna','Müller','anna.mueller@example.com','0660-100001'),
-('Peter','Huber','peter.huber@example.com','0660-100002'),
-('Julia','Schmidt','julia.schmidt@example.com','0660-100003'),
-('Lukas','Gruber','lukas.gruber@example.com','0660-100004'),
-('Laura','Bauer','laura.bauer@example.com','0660-100005'),
-('Max','Wagner','max.wagner@example.com','0660-100006'),
-('Sophie','Lehner','sophie.lehner@example.com','0660-100007'),
-('Felix','Mayr','felix.mayr@example.com','0660-100008'),
-('Sarah','Eder','sarah.eder@example.com','0660-100009'),
-('Paul','Aigner','paul.aigner@example.com','0660-100010'),
-('Lea','Hofer','lea.hofer@example.com','0660-100011'),
-('Simon','Pichler','simon.pichler@example.com','0660-100012'),
-('Hannah','Schwarz','hannah.schwarz@example.com','0660-100013'),
-('David','Koller','david.koller@example.com','0660-100014'),
-('Lisa','Winter','lisa.winter@example.com','0660-100015'),
-('Elias','Lang','elias.lang@example.com','0660-100016'),
-('Maria','Klein','maria.klein@example.com','0660-100017'),
-('Jonas','Keller','jonas.keller@example.com','0660-100018'),
-('Nina','Kunz','nina.kunz@example.com','0660-100019'),
-('Noah','Fuchs','noah.fuchs@example.com','0660-100020'),
-('Clara','Ebner','clara.ebner@example.com','0660-100021'),
-('Tobias','Schuster','tobias.schuster@example.com','0660-100022'),
-('Isabella','Brandl','isabella.brandl@example.com','0660-100023'),
-('Florian','Kaiser','florian.kaiser@example.com','0660-100024'),
-('Emma','Wimmer','emma.wimmer@example.com','0660-100025'),
-('Moritz','Fischer','moritz.fischer@example.com','0660-100026'),
-('Katharina','Lenz','katharina.lenz@example.com','0660-100027'),
-('Valentin','Meier','valentin.meier@example.com','0660-100028'),
-('Sabrina','Binder','sabrina.binder@example.com','0660-100029'),
-('Jakob','Schmid','jakob.schmid@example.com','0660-100030');
+-- Позиції закупок (менеджимо маржу ~10–50%: продажна ціна в artikel.preis вища за einkaufspreis)
+INSERT INTO einkauf_artikel (einkauf_id, artikel_id, menge, einkaufspreis) VALUES
+-- EK#1 (FruchtHof)
+(1,1,150,0.65),   -- Apfel
+(1,2,150,0.75),   -- Banane
+-- EK#2 (DairyCo)
+(2,4,200,0.95),   -- Milch
+(2,5,120,2.80),   -- Käse
+(2,12,120,1.60),  -- Eier
+-- EK#3 (Bäckerei Groß)
+(3,3,180,1.80),   -- Brot
+(3,9,200,0.70),   -- Mehl
+-- EK#4 (GetränkePartner)
+(4,8,220,0.80),   -- Zucker
+(4,10,180,1.60),  -- Saft
+-- EK#5 (Süßwaren Import)
+(5,6,120,5.40),   -- Kaffee
+(5,7,150,2.30),   -- Tee
+(5,11,160,2.00);  -- Schokolade
 
-INSERT INTO artikel (name, preis, lagerbestand, lieferant_id) VALUES
-('Apfel Golden', 0.89, 120, 1),
-('Banane Bio', 1.10, 100, 1),
-('Birne Williams', 0.95, 80, 2),
-('Kirsche Rot', 2.40, 60, 3),
-('Pfirsich Gelb', 1.80, 70, 4),
-('Traube Blau', 2.10, 50, 5),
-('Brot Roggen', 2.30, 60, 6),
-('Semmel Weiß', 0.35, 200, 7),
-('Brezel Klassisch', 0.90, 150, 8),
-('Kuchen Apfel', 3.50, 40, 9),
-('Milch 1L', 1.49, 100, 10),
-('Käse Gouda', 2.90, 80, 11),
-('Butter 250g', 2.10, 70, 12),
-('Joghurt Natur', 1.20, 90, 13),
-('Rahm 200ml', 1.60, 60, 14),
-('Cola 0.5L', 1.30, 100, 15),
-('Wasser Still 1L', 0.99, 120, 16),
-('Orangensaft 1L', 2.40, 70, 17),
-('Limonade Zitrone', 1.50, 90, 18),
-('Eistee Pfirsich', 1.60, 80, 19),
-('Topf Groß', 14.90, 30, 20),
-('Pfanne Mittel', 18.90, 25, 21),
-('Tasse Porzellan', 4.50, 50, 22),
-('Messer Stahl', 9.90, 40, 23),
-('Gabel Silber', 8.90, 45, 24),
-('Keks Schoko', 2.50, 100, 25),
-('Schokolade Vollmilch', 1.90, 120, 26),
-('Bonbon Mix', 1.20, 150, 27),
-('Waffel Haselnuss', 1.70, 110, 28),
-('Praline Deluxe', 3.60, 70, 29);
+-- Продажі (шапки) вересень–жовтень (20 шт, по 1–3 позиції кожен)
+INSERT INTO verkauf (verkauf_id, kunden_id, datum) VALUES
+(1,  1,'2025-09-05 12:10:00'),
+(2,  3,'2025-09-06 15:45:00'),
+(3,  5,'2025-09-08 10:20:00'),
+(4,  2,'2025-09-10 17:05:00'),
+(5,  7,'2025-09-12 09:40:00'),
+(6,  9,'2025-09-15 13:15:00'),
+(7, 11,'2025-09-18 18:25:00'),
+(8,  6,'2025-09-20 11:55:00'),
+(9,  4,'2025-09-23 16:10:00'),
+(10, 8,'2025-09-25 14:05:00'),
+(11,12,'2025-09-28 12:35:00'),
+(12,14,'2025-10-01 10:00:00'),
+(13,15,'2025-10-03 12:22:00'),
+(14,16,'2025-10-05 16:45:00'),
+(15,18,'2025-10-07 09:18:00'),
+(16,19,'2025-10-09 19:02:00'),
+(17,20,'2025-10-11 11:11:00'),
+(18,10,'2025-10-12 15:33:00'),
+(19,13,'2025-10-13 17:47:00'),
+(20, 2,'2025-10-14 10:29:00');
 
-INSERT INTO verkauf (kunden_id, datum) VALUES
-(1, NOW() - INTERVAL 1 DAY),
-(2, NOW() - INTERVAL 2 DAY),
-(3, NOW() - INTERVAL 3 DAY),
-(4, NOW() - INTERVAL 4 DAY),
-(5, NOW() - INTERVAL 5 DAY),
-(6, NOW() - INTERVAL 6 DAY),
-(7, NOW() - INTERVAL 7 DAY),
-(8, NOW() - INTERVAL 8 DAY),
-(9, NOW() - INTERVAL 9 DAY),
-(10, NOW() - INTERVAL 10 DAY),
-(11, NOW() - INTERVAL 11 DAY),
-(12, NOW() - INTERVAL 12 DAY),
-(13, NOW() - INTERVAL 13 DAY),
-(14, NOW() - INTERVAL 14 DAY),
-(15, NOW() - INTERVAL 15 DAY),
-(16, NOW() - INTERVAL 16 DAY),
-(17, NOW() - INTERVAL 17 DAY),
-(18, NOW() - INTERVAL 18 DAY),
-(19, NOW() - INTERVAL 19 DAY),
-(20, NOW() - INTERVAL 20 DAY),
-(21, NOW() - INTERVAL 21 DAY),
-(22, NOW() - INTERVAL 22 DAY),
-(23, NOW() - INTERVAL 23 DAY),
-(24, NOW() - INTERVAL 24 DAY),
-(25, NOW() - INTERVAL 25 DAY),
-(26, NOW() - INTERVAL 26 DAY),
-(27, NOW() - INTERVAL 27 DAY),
-(28, NOW() - INTERVAL 28 DAY),
-(29, NOW() - INTERVAL 29 DAY),
-(30, NOW() - INTERVAL 30 DAY);
-
+-- Позиції продажів (менші кількості; усім товарам достатньо закупок, щоб не піти в мінус)
 INSERT INTO verkauf_artikel (verkauf_id, artikel_id, menge) VALUES
-(1, 1, 2), (1, 7, 1), (1, 12, 3),
-(2, 3, 4), (2, 8, 2),
-(3, 2, 5), (3, 9, 1),
-(4, 4, 3), (4, 15, 2),
-(5, 6, 1), (5, 10, 2),
-(6, 11, 2), (6, 20, 1),
-(7, 13, 3), (7, 17, 1),
-(8, 14, 4), (8, 18, 2),
-(9, 16, 1), (9, 22, 3),
-(10, 19, 2), (10, 21, 1),
-(11, 23, 3), (11, 24, 2),
-(12, 25, 1), (12, 26, 4),
-(13, 27, 2), (13, 28, 1),
-(14, 29, 3), (14, 30, 2),
-(15, 5, 4), (15, 9, 1),
-(16, 10, 2), (16, 11, 3),
-(17, 12, 1), (17, 13, 2),
-(18, 14, 4), (18, 15, 1),
-(19, 16, 3), (19, 17, 2),
-(20, 18, 1), (20, 19, 4),
-(21, 20, 2), (21, 21, 3),
-(22, 22, 1), (22, 23, 2),
-(23, 24, 3), (23, 25, 4),
-(24, 26, 2), (24, 27, 1),
-(25, 28, 3), (25, 29, 2),
-(26, 30, 1), (26, 1, 4),
-(27, 2, 3), (27, 3, 2),
-(28, 4, 1), (28, 5, 5),
-(29, 6, 2), (29, 7, 3),
-(30, 8, 4), (30, 9, 1);
+(1, 1,3),(1, 3,1),
+(2, 2,2),(2, 4,2),
+(3, 5,1),(3, 1,2),
+(4, 3,2),(4, 9,1),
+(5, 4,2),(5, 8,2),
+(6, 10,2),(6, 11,1),
+(7, 6,1),(7, 7,1),(7, 5,1),
+(8, 2,3),
+(9, 1,2),(9, 12,1),
+(10,3,1),(10,10,2),
+(11,11,2),
+(12,4,2),(12,8,1),
+(13,6,1),(13,7,2),
+(14,5,1),(14,1,2),
+(15,2,2),(15,3,1),
+(16,10,2),(16,8,2),
+(17,11,2),(17,6,1),
+(18,12,2),(18,9,2),
+(19,7,1),(19,5,1),
+(20,1,2),(20,3,1);
+
+ -- Перерахунок залишків у artikel.lagerbestand
+UPDATE artikel a
+LEFT JOIN (
+  SELECT artikel_id, SUM(menge) AS gekaufte
+  FROM einkauf_artikel
+  GROUP BY artikel_id
+) ek ON ek.artikel_id = a.artikel_id
+LEFT JOIN (
+  SELECT artikel_id, SUM(menge) AS verkaufte
+  FROM verkauf_artikel
+  GROUP BY artikel_id
+) vk ON vk.artikel_id = a.artikel_id
+SET a.lagerbestand = COALESCE(ek.gekaufte,0) - COALESCE(vk.verkaufte,0);
+
+
+SELECT @@SQL_SAFE_UPDATES;

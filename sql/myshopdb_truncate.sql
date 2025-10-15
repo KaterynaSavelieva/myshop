@@ -7,5 +7,7 @@ TRUNCATE TABLE verkauf;
 TRUNCATE TABLE artikel;
 TRUNCATE TABLE kunden;
 TRUNCATE TABLE lieferanten;
+TRUNCATE TABLE einkauf;
+TRUNCATE TABLE einkauf_artikel;
 
 SET FOREIGN_KEY_CHECKS = 1;
