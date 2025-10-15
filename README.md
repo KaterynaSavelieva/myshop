@@ -38,13 +38,15 @@ Die Projektdateien werden zusätzlich auf GitHub gespeichert.
 
 
 ⚙️ Technische Umgebung
-| Komponente                   | Beschreibung                                                      	                                          |
+| Komponente                   | Beschreibung                                                      	                                          
 | -----------------------------|----------------------------------------------------------------------------------------------
 | 💻 **Entwicklungsumgebung** | PyCharm Community Edition (Windows 11) 
 | 🍓 **Server**               | Raspberry Pi  mit Raspberry Pi OS (64-bit) 
 | 🗄️ **Datenbank**            | MariaDB 11.3 (läuft auf Raspberry Pi) 
+| 💬 **SQL-Sprache**          | Erstellung von Tabellen, Datenabfragen und Analysen mit SQL |
 | 🐍 **Programmiersprache**   | Python 3.11 mit `mysql-connector-python` und `python-dotenv` 
 | 🌐 **Netzwerk**             | Verbindung über IP-Adresse 192.168.31.237 |
-| ☁️ **Versionsverwaltung**   | Git & GitHub Repository: [KaterynaSavelieva/myshop](https://github.com/KaterynaSavelieva/myshop) 
+| ☁️ **Versionsverwaltung**   | Git & GitHub Repository: [KaterynaSavelieva/myshop](https://github.com/KaterynaSavelieva/myshop)  
 
-Diese Umgebung ermöglicht eine klare Trennung zwischen Datenhaltung (Raspberry Pi) und Datenanalyse (Laptop).
+Diese Umgebung ermöglicht eine klare Trennung zwischen Datenhaltung (Raspberry Pi) und Datenanalyse (Laptop mit Python und SQL-Abfragen).
+
