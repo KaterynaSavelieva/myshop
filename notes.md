@@ -1,6 +1,11 @@
+# Git Work Routine (Laptop + Raspberry)
+1. git pull origin main
+2. work...
+3. git add .
+4. git commit -m "..."
+5. git push origin main
 
-
-
+   
 **Datenbankzugriff (MariaDB)**
 
     sudo mariadb -u root myshopdb 
@@ -37,8 +42,3 @@ _Prüfen, ob MariaDB läuft_
 _Tabellen anzeigen_
         
         sudo mariadb -u root myshopdb -e "SHOW TABLES;"
-
-Git pull
-
-
-
