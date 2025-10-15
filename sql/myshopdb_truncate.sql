@@ -1,0 +1,11 @@
+USE myshopdb;
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE TABLE verkauf_artikel;
+TRUNCATE TABLE verkauf;
+TRUNCATE TABLE artikel;
+TRUNCATE TABLE kunden;
+TRUNCATE TABLE lieferanten;
+
+SET FOREIGN_KEY_CHECKS = 1;
