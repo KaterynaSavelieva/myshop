@@ -66,9 +66,10 @@ def create_sale():
             return
 
         # 3) створюємо шапку продажу (час трохи випадковий у межах 2 годин)
+        now = datetime.now()
         cur.execute(
             "INSERT INTO verkauf (kunden_id, datum) VALUES (%s, %s)",
-            (kunden_id, datetime.now() - timedelta(minutes=random.randint(0, 120))),
+            (kunden_id, now),
         )
         verkauf_id = cur.lastrowid
 
