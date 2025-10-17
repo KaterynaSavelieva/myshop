@@ -1,69 +1,91 @@
-# створює одну закупку (простий варіант)
+"""
+Генератор закупок:
+- створює шапку закупки в `einkauf`
+- додає 1..5 позицій у `einkauf_artikel`
+- ціна береться з artikel_lieferant (для вибраного постачальника)
+- склади збільшуються відразу (UPDATE artikel.lagerbestand = lagerbestand + qty)
+"""
+
 import random
 from datetime import datetime
-from db import get_conn
+from db import get_conn, fetch_all, fetch_one
+
+# параметри генерації
+MIN_LINES = 1
+MAX_LINES = 5
+QTY_RANGE = (20, 120)  # скільки штук на позицію
+SUPPLIER_HINT = None   # якщо хочеш примусово постачальника: наприклад 4, або None для випадкового
 
 def create_purchase():
     conn = get_conn()
     cur = conn.cursor()
 
     try:
-        # 1) вибрати випадкового постачальника
-        cur.execute("SELECT lieferant_id FROM lieferanten")
-        liefer = cur.fetchall()
-        if not liefer:
+        # 1) список постачальників
+        lieferanten = fetch_all(cur, "SELECT lieferant_id FROM lieferanten")
+        if not lieferanten:
             print("Немає постачальників.")
             return
-        lieferant_id = random.choice(liefer)[0]
+        if SUPPLIER_HINT:
+            lieferant_id = SUPPLIER_HINT
+        else:
+            lieferant_id = random.choice(lieferanten)[0]
 
-        # 2) вибрати декілька товарів з каталогу
-        cur.execute("SELECT artikel_id, preis FROM artikel")
-        artikels = cur.fetchall()
-        if not artikels:
-            print("Немає товарів у таблиці artikel.")
-            return
-
-        # 1..3 різні товари
-        chosen = random.sample(artikels, k=min(3, len(artikels)))
-
-        # 3) шапка закупки
-        rechnung = f"EK-{int(datetime.now().timestamp())}"
-        bemerkung = "Auto"
+        # 2) створюємо шапку закупки
         cur.execute(
             "INSERT INTO einkauf (lieferant_id, datum, rechnung_nr, bemerkung) "
             "VALUES (%s, NOW(), %s, %s)",
-            (lieferant_id, rechnung, bemerkung)
+            (lieferant_id, f"EK-{datetime.now():%Y%m%d-%H%M%S}", "Auto-generator")
         )
         einkauf_id = cur.lastrowid
 
-        # 4) позиції закупки + оновлення складу
-        for art_id, verkaufspreis in chosen:
-            menge = random.randint(3, 20)  # скільки прийшло
-            # закупівельна ціна – нижча, ніж продажна
-            ek_preis = round(float(verkaufspreis) * random.uniform(0.5, 0.9), 2)
+        # 3) перелік товарів, які цей постачальник може постачати (з цінами)
+        artikel_preise = fetch_all(
+            cur,
+            "SELECT al.artikel_id, al.einkaufspreis "
+            "FROM artikel_lieferant al "
+            "WHERE al.lieferant_id = %s",
+            (lieferant_id,)
+        )
+        if not artikel_preise:
+            raise RuntimeError(f"У постачальника {lieferant_id} немає прив’язаних товарів у artikel_lieferant.")
 
-            # вставка позиції
+        # вибираємо 1..5 унікальних товарів
+        lines = random.sample(artikel_preise, k=min(random.randint(MIN_LINES, MAX_LINES), len(artikel_preise)))
+
+        inserted = 0
+        for art_id, ek_preis in lines:
+            qty = random.randint(*QTY_RANGE)
+
+            # додаємо позицію закупки
             cur.execute(
                 "INSERT INTO einkauf_artikel (einkauf_id, artikel_id, menge, einkaufspreis) "
                 "VALUES (%s, %s, %s, %s)",
-                (einkauf_id, art_id, menge, ek_preis)
+                (einkauf_id, art_id, qty, ek_preis)
             )
 
-            # збільшити залишок
+            # збільшуємо склад
             cur.execute(
                 "UPDATE artikel SET lagerbestand = lagerbestand + %s WHERE artikel_id = %s",
-                (menge, art_id)
+                (qty, art_id)
             )
+            inserted += 1
+
+        if inserted == 0:
+            raise RuntimeError("Жодної позиції не додано — скасовую закупку.")
 
         conn.commit()
-        print(f"✅ Закупка #{einkauf_id} створена. Позицій: {len(chosen)}.")
-
+        print(f"Einkauf #{einkauf_id} створено. Позицій: {inserted}. Lieferant: {lieferant_id}.")
+        print(f"Einkauf згенеровано: {datetime.now():%Y-%m-%d %H:%M:%S}")
     except Exception as e:
         conn.rollback()
-        print("❌ Помилка під час закупки:", e)
+        print("Помилка при створенні закупки:", e)
     finally:
         cur.close()
         conn.close()
 
+
 if __name__ == "__main__":
+    print("="*70)
+    print(f"🕒 Neuer Einkauf gestartet um {datetime.now():%Y-%m-%d %H:%M:%S}")
     create_purchase()
