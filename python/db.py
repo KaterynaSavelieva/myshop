@@ -1,22 +1,59 @@
-# просте підключення (поточна функція для імпорту)
+# db.py
+"""
+Модуль для підключення до бази даних MySQL (MyShopDB)
+та виконання простих SELECT-запитів.
+"""
 
 import os
+import pymysql
+from pymysql.cursors import Cursor
 from dotenv import load_dotenv
-import mysql.connector
+from pathlib import Path
 
-# читаємо .env з кореня репозиторію
-load_dotenv()
+
+# 🔹 Завантажуємо .env (лежить у корені myshop)
+env_path = Path(__file__).resolve().parents[1] / ".env"
+load_dotenv(dotenv_path=env_path)
+
 
 def get_conn():
     """
-    Повертає з'єднання з MariaDB / MySQL, налаштоване стабільно для Windows.
+    Створює та повертає підключення до бази даних.
+    Дані беруться з .env або значення за замовчуванням.
     """
-    return mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("DB_NAME"),
-        auth_plugin="mysql_native_password",
-        use_pure=True,             # важливо для стабільності на нових Python
-        connection_timeout=5
-    )
+    try:
+        conn = pymysql.connect(
+            host=os.getenv("DB_HOST", "localhost"),
+            user=os.getenv("DB_USER", "kateryna"),
+            password=os.getenv("DB_PASSWORD", ""),
+            database=os.getenv("DB_NAME", "myshopdb"),
+            charset="utf8mb4",
+            autocommit=False,
+            cursorclass=Cursor  # якщо треба словники → DictCursor
+        )
+        return conn
+
+    except Exception as e:
+        print("❌ Помилка підключення до бази даних:", e)
+        return None
+
+
+def fetch_one(cur, sql, params=None):
+    """Повертає один запис (tuple або None)."""
+    cur.execute(sql, params or ())
+    return cur.fetchone()
+
+
+def fetch_all(cur, sql, params=None):
+    """Повертає всі записи (список tuple)."""
+    cur.execute(sql, params or ())
+    return cur.fetchall()
+
+
+if __name__ == "__main__":
+    conn = get_conn()
+    if conn:
+        print("✅ Підключення успішне!")
+        conn.close()
+    else:
+        print("❌ Не вдалося підключитись до бази.")
