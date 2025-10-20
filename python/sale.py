@@ -34,7 +34,7 @@ def last_purchase_price(cur, artikel_id):
         FROM einkauf_artikel ea
         JOIN einkauf e ON e.einkauf_id = ea.einkauf_id
         WHERE ea.artikel_id = %s
-        ORDER BY e.datum DESC, ea.einkauf_id DESC
+        ORDER BY e.einkauf_datum DESC, ea.einkauf_id DESC
         LIMIT 1
         """,
         (artikel_id,)
@@ -68,7 +68,7 @@ def create_sale():
         # 3) створюємо шапку продажу (час трохи випадковий у межах 2 годин)
         now = datetime.now()
         cur.execute(
-            "INSERT INTO verkauf (kunden_id, datum) VALUES (%s, %s)",
+            "INSERT INTO verkauf (kunden_id, verkauf_datum) VALUES (%s, %s)",
             (kunden_id, now),
         )
         verkauf_id = cur.lastrowid

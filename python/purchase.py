@@ -33,7 +33,7 @@ def create_purchase():
 
         # 2) створюємо шапку закупки
         cur.execute(
-            "INSERT INTO einkauf (lieferant_id, datum, rechnung_nr, bemerkung) "
+            "INSERT INTO einkauf (lieferant_id, einkauf_datum, rechnung_nr, bemerkung) "
             "VALUES (%s, NOW(), %s, %s)",
             (lieferant_id, f"EK-{datetime.now():%Y%m%d-%H%M%S}", "Auto-generator")
         )
