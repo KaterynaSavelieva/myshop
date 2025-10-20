@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>MyShop — Neueste Verkäufe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 24px; }
+    h1 { margin-bottom: 16px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px 10px; }
+    th { background: #f5f5f5; text-align: left; }
+    tr:nth-child(even) { background: #fafafa; }
+  </style>
+</head>
+<body>
+  <h1>Letzte 10 Verkäufe</h1>
+
+  {% if sales and sales|length %}
+    <table>
+      <thead>
+        <tr>
+          <th>Verkauf ID</th>
+          <th>Datum</th>
+          <th>Kunde</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in sales %}
+          <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Keine Verkäufe gefunden.</p>
+  {% endif %}
+</body>
+</html>

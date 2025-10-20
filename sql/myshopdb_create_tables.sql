@@ -80,3 +80,5 @@ CREATE TABLE verkauf_artikel (
 
 ALTER TABLE verkauf_artikel CHANGE menge verkauf_menge INT CHECK (verkauf_menge > 0);
 ALTER TABLE einkauf_artikel CHANGE menge einkauf_menge INT CHECK (einkauf_menge > 0);
+ALTER TABLE einkauf CHANGE datum einkauf_datum  DATETIME DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE verkauf CHANGE datum verkauf_datum  DATETIME DEFAULT CURRENT_TIMESTAMP;

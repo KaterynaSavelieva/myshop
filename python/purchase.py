@@ -24,7 +24,7 @@ def create_purchase():
         # 1) список постачальників
         lieferanten = fetch_all(cur, "SELECT lieferant_id FROM lieferanten")
         if not lieferanten:
-            print("Немає постачальників.")
+            print("Es gibt keine Lieferanten.")
             return
         if SUPPLIER_HINT:
             lieferant_id = SUPPLIER_HINT
@@ -48,7 +48,7 @@ def create_purchase():
             (lieferant_id,)
         )
         if not artikel_preise:
-            raise RuntimeError(f"У постачальника {lieferant_id} немає прив’язаних товарів у artikel_lieferant.")
+            raise RuntimeError(f"Lieferant {lieferant_id} hat keine verwandten Artikel у artikel_lieferant.")
 
         # вибираємо 1..5 унікальних товарів
         lines = random.sample(artikel_preise, k=min(random.randint(MIN_LINES, MAX_LINES), len(artikel_preise)))
@@ -75,11 +75,11 @@ def create_purchase():
             raise RuntimeError("Жодної позиції не додано — скасовую закупку.")
 
         conn.commit()
-        print(f"Einkauf #{einkauf_id} створено. Позицій: {inserted}. Lieferant: {lieferant_id}.")
-        print(f"Einkauf згенеровано: {datetime.now():%Y-%m-%d %H:%M:%S}")
+        print(f"Einkauf #{einkauf_id} erstellt. Artikel: {inserted}. Lieferant: {lieferant_id}.")
+        print(f"Einkauf generiert: {datetime.now():%Y-%m-%d %H:%M:%S}")
     except Exception as e:
         conn.rollback()
-        print("Помилка при створенні закупки:", e)
+        print("Fehler beim Erstellen eines Einkaufs:", e)
     finally:
         cur.close()
         conn.close()
