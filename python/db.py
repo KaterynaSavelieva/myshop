@@ -18,36 +18,32 @@ load_dotenv(dotenv_path=env_path)
 def get_conn():
     """
     Створює та повертає підключення до бази даних.
-    Підтримує кілька IP-адрес у змінній DB_HOSTS через кому.
+    Пробує всі IP з DB_HOSTS по черзі.
     """
-    hosts = os.getenv("DB_HOSTS")
-    if hosts:
-        host_list = [h.strip() for h in hosts.split(",")]
-    else:
-        host_list = [os.getenv("DB_HOST", "localhost")]
+    hosts = os.getenv("DB_HOSTS", "localhost").split(",")
 
-    user = os.getenv("DB_USER", "kateryna")
-    password = os.getenv("DB_PASSWORD", "")
-    database = os.getenv("DB_NAME", "myshopdb")
-
-    for host in host_list:
+    for host in hosts:
+        host = host.strip()
         try:
             conn = pymysql.connect(
                 host=host,
-                user=user,
-                password=password,
-                database=database,
+                user=os.getenv("DB_USER", "kateryna"),
+                password=os.getenv("DB_PASSWORD", ""),
+                database=os.getenv("DB_NAME", "myshopdb"),
                 charset="utf8mb4",
                 autocommit=False,
-                cursorclass=Cursor  # якщо треба словники → DictCursor
+                cursorclass=Cursor,
+                connect_timeout=3
             )
             print(f"✅ Підключення успішне: {host}")
             return conn
+
         except Exception as e:
             print(f"⚠️ Не вдалося підключитись до {host}: {e}")
 
     print("❌ Не вдалося підключитись до жодного сервера.")
     return None
+
 
 
 def fetch_one(cur, sql, params=None):
