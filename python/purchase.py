@@ -59,7 +59,7 @@ def create_purchase():
 
             # додаємо позицію закупки
             cur.execute(
-                "INSERT INTO einkauf_artikel (einkauf_id, artikel_id, menge, einkaufspreis) "
+                "INSERT INTO einkauf_artikel (einkauf_id, artikel_id, einkauf_menge, einkaufspreis) "
                 "VALUES (%s, %s, %s, %s)",
                 (einkauf_id, art_id, qty, ek_preis)
             )

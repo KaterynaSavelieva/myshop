@@ -117,7 +117,7 @@ def create_sale():
             cur.execute(
                 """
                 INSERT INTO verkauf_artikel
-                    (verkauf_id, artikel_id, menge, verkaufspreis, rabatt_pct)
+                    (verkauf_id, artikel_id, verkauf_menge, verkaufspreis, rabatt_pct)
                 VALUES (%s, %s, %s, %s, %s)
                 """,
                 (verkauf_id, art_id, qty, verkaufspreis, rabatt),
